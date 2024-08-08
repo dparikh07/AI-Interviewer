@@ -1,12 +1,11 @@
 import React from 'react'
 
-
-function Dashboard() {
+function addNewMock() {
   return (
     <div>
-    Hello
+      
     </div>
   )
 }
 
-export default Dashboard
+export default addNewMock

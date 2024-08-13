@@ -8,10 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
+import { Textarea } from "@/components/ui/textarea"
 
 function AddNewMock() {
   const [openDailog,setopenDialog] = useState(false);
+  const [jobRole,setjobRole] = useState();
+  const [jobDescription,setjobDescription] = useState();
+  const [yearsOfExperience,setyearsOfExperience] = useState();
+
+  const onSubmit=(e)=>{
+    e.preventDefault()
+    console.log(jobRole)
+  }
   return (
     <div>
       <div className='p-10 border rounded-lg bg-secondary hover:scale-105 hover:shadow-md cursor-pointer transition-all' onClick={()=>setopenDialog(true)}>
@@ -20,14 +30,30 @@ function AddNewMock() {
       <Dialog open={openDailog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogTitle className='text-2xl'>Tell us About your Interview</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+          <form onSubmit={onSubmit}>
+          <div>
+           <h2>Add details about your interview</h2>
+
+           <div className='mt-5'>
+            <label>Job Role</label>
+            <Input placeholder="Ex-Full Stack Developer" onChange={(event)=>setjobRole(event.target.value)}/>
+           </div>
+           <div className='mt-5'>
+            <label>Job Description</label>
+            <Textarea placeholder="Type your answer here" onChange={(event)=>setjobDescription(event.target.value)}/>
+           </div>
+           <div className='my-5'>
+            <label>Years of Experience</label>
+            <Input placeholder="Ex-2" type="number" onChange={(event)=>setyearsOfExperience(event.target.value)}/>
+           </div>
+          </div>
             <div className='flex justify-end gap-5'>
               <Button variant='ghost' onClick={()=>setopenDialog(false)}>Cancle</Button>
               <Button>Okay</Button>
             </div>
+            </form>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

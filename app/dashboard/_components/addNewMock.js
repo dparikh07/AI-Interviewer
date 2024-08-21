@@ -12,19 +12,24 @@ import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
 import { Textarea } from "@/components/ui/textarea"
 import { chatSession } from '@/utils/GeminiAIModal';
+import { LoaderCircle } from 'lucide-react';
 
 function AddNewMock() {
   const [openDailog,setopenDialog] = useState(false);
   const [jobRole,setjobRole] = useState();
   const [jobDescription,setjobDescription] = useState();
   const [yearsOfExperience,setyearsOfExperience] = useState();
+  const [loading,setloading]=useState(false);
 
   const onSubmit=async(e)=>{
+    setloading(true);
     e.preventDefault()
     console.log(jobRole)
-    const InputPrompt = "Job Role : "+jobRole+", Job Description : "+jobDescription+"Job Experience : "+yearsOfExperience+", Based on these critarea give us the "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview questions along with answers in JSON Format"
+    const InputPrompt = "Job Role : "+jobRole+", Job Description : "+jobDescription+"Job Experience : "+yearsOfExperience+", Based on these critarea give us the "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview questions along with answers in JSON Format, no extra text which can be directly parced, do not put '```' in the end"
     const result = await chatSession.sendMessage(InputPrompt);
-    console.log(result.response.text());
+    const MockJSONres = (result.response.text()).replace('json','');
+    console.log(JSON.parse(MockJSONres));
+    setloading(false);
   }
   return (
     <div>
@@ -55,7 +60,12 @@ function AddNewMock() {
           </div>
             <div className='flex justify-end gap-5'>
               <Button variant='ghost' onClick={()=>setopenDialog(false)}>Cancle</Button>
-              <Button>Okay</Button>
+
+              <Button type='submit' disabled={loading}>
+              {
+                loading?<LoaderCircle/>:<p>Start Interview</p>
+              }
+              </Button>
             </div>
             </form>
           </DialogDescription>

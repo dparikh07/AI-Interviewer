@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
 import { Textarea } from "@/components/ui/textarea"
+import { chatSession } from '@/utils/GeminiAIModal';
 
 function AddNewMock() {
   const [openDailog,setopenDialog] = useState(false);
@@ -18,9 +19,12 @@ function AddNewMock() {
   const [jobDescription,setjobDescription] = useState();
   const [yearsOfExperience,setyearsOfExperience] = useState();
 
-  const onSubmit=(e)=>{
+  const onSubmit=async(e)=>{
     e.preventDefault()
     console.log(jobRole)
+    const InputPrompt = "Job Role : "+jobRole+", Job Description : "+jobDescription+"Job Experience : "+yearsOfExperience+", Based on these critarea give us the "+process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT+" Interview questions along with answers in JSON Format"
+    const result = await chatSession.sendMessage(InputPrompt);
+    console.log(result.response.text());
   }
   return (
     <div>
